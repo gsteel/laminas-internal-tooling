@@ -56,6 +56,9 @@ include makefiles/Docker.mk
 include makefiles/Composer.mk
 include makefiles/MarkdownLint.mk
 include makefiles/Mago.mk
+include makefiles/PHPCodeSniffer.mk
+include makefiles/PHPUnit.mk
+include makefiles/Psalm.mk
 
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…
