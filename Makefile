@@ -52,13 +52,13 @@ help: ## shows this help
 # Include Makefile fragments first.
 # These files collect various targets into `$CLEAN_TARGETS` and `$QA_TARGETS`
 #
-include makefiles/Docker.mk
-include makefiles/Composer.mk
-include makefiles/MarkdownLint.mk
-include makefiles/Mago.mk
-include makefiles/PHPCodeSniffer.mk
-include makefiles/PHPUnit.mk
-include makefiles/Psalm.mk
+include $(_MAKEFILE_DIR)makefiles/Docker.mk
+include $(_MAKEFILE_DIR)makefiles/Composer.mk
+include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
+include $(_MAKEFILE_DIR)makefiles/Mago.mk
+include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
+include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
+include $(_MAKEFILE_DIR)makefiles/Psalm.mk
 
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…
