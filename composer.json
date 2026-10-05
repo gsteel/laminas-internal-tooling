@@ -1,0 +1,28 @@
+{
+    "name": "laminas/internal-tooling",
+    "description": "Internal tooling configuration and defaults for Laminas and Mezzio projects",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "dev",
+        "laminas"
+    ],
+    "homepage": "https://laminas.dev",
+    "support": {
+        "issues": "https://github.com/laminas/internal-tooling/issues",
+        "source": "https://github.com/laminas/internal-tooling",
+        "rss": "https://github.com/laminas/internal-tooling/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.99"
+        }
+    },
+    "require": {
+        "php": "~8.2 || ~8.3 || ~8.4 || ~8.5 || ~8.6",
+        "carthage-software/mago": "^1.51.2"
+    }
+}

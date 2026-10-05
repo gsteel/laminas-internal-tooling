@@ -1,0 +1,122 @@
+#:schema https://mago.carthage.software/1.51.0/schema.json
+
+#
+# Basic Mago Configuration for Laminas & Mezzio Repositories
+#
+# This configuration can be used and then overridden on a per-project basis by extending this file with
+#
+# `extends = "vendor/laminas/internal-tooling/mago/defaults.toml"`
+# See https://mago.carthage.software/1.51.0/en/guide/configuration/#sharing-configuration-with-extends for more detail.
+#
+# For full documentation, see https://mago.carthage.software/1.51.0/en/tools/overview/
+version = "1"
+php-version = "8.2.0"
+
+[source]
+workspace = "."
+paths = ["src/", "test/"]
+includes = ["vendor"]
+excludes = []
+
+[source.glob]
+literal-separator = true
+
+#
+# Formatter Configuration
+#
+[formatter]
+preset = "default"
+
+align-assignment-like = true
+
+preserve-breaking-member-access-chain = true
+preserve-breaking-member-access-chain-first-method-on-same-line = true
+preserve-breaking-argument-list = true
+preserve-breaking-array-like = true
+preserve-breaking-parameter-list = true
+preserve-breaking-attribute-list = true
+preserve-breaking-conditional-expression = true
+preserve-breaking-condition-expression = true
+preserve-redundant-logical-binary-expression-parentheses = true
+
+space-after-logical-not-unary-prefix-operator = true
+
+#
+# Linter Configuration
+#
+[linter]
+baseline = "baseline.lint.toml"
+baseline-variant = "loose"  # or "strict"
+integrations = ["phpunit"]
+
+[linter.rules]
+
+ambiguous-function-call = { enabled = false }
+literal-named-argument = { enabled = false }
+halstead = { effort-threshold = 7000 }
+
+# Don't require `assert()` to carry a description
+assert-description = { exclude = ["src/", "test/"] }
+
+# PHPUnit assertion style
+assertion-style = {
+    enabled = true,
+    style = "self",
+}
+
+# Allow long parameter lists in tests
+excessive-parameter-list = {
+    exclude = ["test/"],
+}
+
+too-many-methods = {
+    exclude = ["test/"],
+}
+
+# It's not unreasonable to use booleans as method arguments
+no-boolean-flag-parameter = {
+    enabled = false,
+}
+
+# Passwords in tests are not sensitive
+sensitive-parameter = {
+    exclude = ["test/"],
+}
+
+#
+# Static Analyser Configuration
+#
+[analyzer]
+baseline = "baseline.sa.toml"
+baseline-variant = "loose"  # or "strict"
+
+plugins = [
+    "psr-container",
+]
+
+find-unused-definitions = true
+find-unused-expressions = true
+analyze-dead-code = true
+memoize-properties = true
+check-throws = true
+check-missing-override = false
+find-unused-parameters = true
+strict-list-index-checks = true
+strict-array-index-existence = true
+allow-array-truthy-operand = false
+no-boolean-literal-comparison = false
+check-missing-type-hints = true
+register-super-globals = false
+
+ignore = [
+    # Don't check for thrown exceptions in tests
+    { code = "unhandled-thrown-type", in = "test/" },
+]
+
+# Specific Exception classes to ignore
+unchecked-exception-classes = []
+
+# Exception Hierarchies to ignore
+unchecked-exceptions = [
+    "Psr\\Container\\ContainerExceptionInterface",
+]
