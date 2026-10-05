@@ -18,6 +18,7 @@ Other host machine dependencies include:
 
 - `xpath` Some targets shell out to `xpath` to inspect XML configuration files
 - `find` Used in some situations to discover files in the working tree
+- `git` Used to fetch the documentation theme when building docs
 
 ## Features
 
@@ -42,6 +43,10 @@ This target is also appended to the `qa` make target.
 ### Markdown Link Checker
 
 When a `./docs` directory exists, `make qa` will automatically invoke the target `docs-check-links`, which will in turn run a link checker over all the Markdown files in `./docs`
+
+### Documentation Builder
+
+The `docs-build` target will fetch the documentation theme repository, build a `mkdocs` image and build the static docs directory as per Laminas conventions so that you can eyeball the built docs locally before pushing.
 
 ### Mago Configuration
 

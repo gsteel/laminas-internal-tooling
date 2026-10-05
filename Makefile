@@ -61,6 +61,7 @@ include $(_MAKEFILE_DIR)makefiles/Psalm.mk
 # Run docs checks later during QA runs by moving them to the end of the inclusion list
 include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
 include $(_MAKEFILE_DIR)makefiles/LinkChecker.mk
+include $(_MAKEFILE_DIR)makefiles/Documentation.mk
 
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…
