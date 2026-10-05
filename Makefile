@@ -54,11 +54,13 @@ help: ## shows this help
 #
 include $(_MAKEFILE_DIR)makefiles/Docker.mk
 include $(_MAKEFILE_DIR)makefiles/Composer.mk
-include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
 include $(_MAKEFILE_DIR)makefiles/Mago.mk
 include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
+# Run docs checks later during QA runs by moving them to the end of the inclusion list
+include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
+include $(_MAKEFILE_DIR)makefiles/LinkChecker.mk
 
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…
