@@ -29,6 +29,9 @@ preset = "default"
 
 align-assignment-like = true
 
+# Less `?Type`, More `Type|null`
+null-type-hint = "null_pipe_last"
+
 preserve-breaking-member-access-chain = true
 preserve-breaking-member-access-chain-first-method-on-same-line = true
 preserve-breaking-argument-list = true
