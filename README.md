@@ -10,6 +10,15 @@ It is not intended for external use.
 composer require laminas/internal-tooling
 ```
 
+## Requirements
+
+Pretty much everything runs in Docker, so you will need docker installed and running on the host machine for the make targets to work.
+
+Other host machine dependencies include:
+
+- `xpath` Some targets shell out to `xpath` to inspect XML configuration files
+- `find` Used in some situations to discover files in the working tree
+
 ## Features
 
 ### Out-of-the-box `Makefile`
@@ -29,6 +38,10 @@ Most tools that perform QA checks that can be detected as being installed are ad
 
 With the provided `Makefile`, running `make docs-lint` will check all Markdown files in the root directory, and in the `./docs` subdirectory against the [markdownlint](https://github.com/DavidAnson/markdownlint-cli2) rules used in CI.
 This target is also appended to the `qa` make target.
+
+### Markdown Link Checker
+
+When a `./docs` directory exists, `make qa` will automatically invoke the target `docs-check-links`, which will in turn run a link checker over all the Markdown files in `./docs`
 
 ### Mago Configuration
 
