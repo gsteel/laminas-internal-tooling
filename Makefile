@@ -55,6 +55,7 @@ help: ## shows this help
 include makefiles/Docker.mk
 include makefiles/Composer.mk
 include makefiles/MarkdownLint.mk
+include makefiles/Mago.mk
 
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…

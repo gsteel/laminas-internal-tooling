@@ -41,3 +41,6 @@ extends = "vendor/laminas/internal-tooling/mago/defaults.toml"
 
 # ... customised per-project rules and configuration follows
 ```
+
+There are a number of `make` targets available for running Mago's suite of tools.
+`make qa` will run the formatter in check mode, the linter and the analyser.
