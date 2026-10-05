@@ -32,4 +32,4 @@ endif
 
 shell: build-php-image ## Get a shell running in the PHP Docker container
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} bash
-.PHONY: shell;
+.PHONY: shell
