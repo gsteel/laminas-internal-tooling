@@ -6,7 +6,7 @@ HAS_DOCS = FALSE
 ifneq ("$(wildcard docs)","")
 ifneq ("$(wildcard mkdocs.yml)","")
     HAS_DOCS = TRUE
-    CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-mkdocs-image
+    CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-mkdocs-image docs-rm-theme-files
 endif
 endif
 
@@ -48,3 +48,9 @@ ifneq ($(strip $(MKDOCS_IMAGE_ID)),)
 	@docker image rm ${MKDOCS_IMAGE_ID}
 endif
 .PHONY: docs-rm-mkdocs-image
+
+# Removes `./documentation-theme`
+docs-rm-theme-files:
+	@rm -rf documentation-theme
+	@rm -rf docs/html
+.PHONY: docs-rm-theme-files
