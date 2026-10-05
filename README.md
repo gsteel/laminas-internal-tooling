@@ -10,9 +10,9 @@ It is not intended for external use.
 composer require laminas/internal-tooling
 ```
 
-### Features
+## Features
 
-#### Out-of-the-box `Makefile`
+### Out-of-the-box `Makefile`
 
 Create a Makefile in the project root with the following contents, after installing this dependency via composer:
 
@@ -23,12 +23,14 @@ include vendor/laminas/internal-tooling/Makefile
 
 Now, running `make` should list a number of useful targets for general QA work on Laminas and Mezzio libraries.
 
-#### Markdown Linting
+Most tools that perform QA checks that can be detected as being installed are added to the `qa` target, so issuing `make qa` will run everything in series.
+
+### Markdown Linting
 
 With the provided `Makefile`, running `make docs-lint` will check all Markdown files in the root directory, and in the `./docs` subdirectory against the [markdownlint](https://github.com/DavidAnson/markdownlint-cli2) rules used in CI.
 This target is also appended to the `qa` make target.
 
-#### Mago Configuration
+### Mago Configuration
 
 Provides a default configuration for [Mago](https://mago.carthage.software) which projects should extend for consistent coding standards via `mago fmt` and sane defaults for static analysis.
 
@@ -41,3 +43,22 @@ extends = "vendor/laminas/internal-tooling/mago/defaults.toml"
 
 # ... customised per-project rules and configuration follows
 ```
+
+There are a number of `make` targets available for running Mago's suite of tools.
+`make qa` will run the formatter in check mode, the linter and the analyser.
+
+### PHP Code Sniffer Make Targets
+
+- `make phpcs` Runs PHP_CodeSniffer coding standards checks
+- `make phpcbf` Runs PHP_CodeSniffer's fixers
+
+### Psalm Make Targets
+
+- `make psalm` Run Psalm SA checks
+- `make psalm-update-baseline` Update the Psalm baseline
+- `make psalm-set-baseline` Expand the Psalm baseline with new issues
+- `make psalm-clear-cache` Clears the Psalm cache
+
+### PHPUnit Make Targets
+
+- `make test`
