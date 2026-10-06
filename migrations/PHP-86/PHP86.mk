@@ -4,5 +4,5 @@ migrate-to-php86: _do-migrate-to-php86 build-php-image-unconditionally bump-dev 
 .PHONY: migrate-to-php86
 
 _do-migrate-to-php86: build-php-image
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(_MAKEFILE_DIR)
+	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
 .PHONY: _do-migrate-to-php86
