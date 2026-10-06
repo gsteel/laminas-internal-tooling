@@ -10,6 +10,14 @@ It is not intended for external use.
 composer require laminas/internal-tooling
 ```
 
+Next, copy the shipped `Makefile` template to the root of the project with:
+
+```bash
+cp vendor/laminas/internal-tooling/templates/MakefileTemplate.mk ./Makefile
+```
+
+The template will need some adjustment depending on the project.
+
 ## Requirements
 
 Pretty much everything runs in Docker, so you will need docker installed and running on the host machine for the make targets to work.
