@@ -6,6 +6,7 @@ declare(strict_types=1);
 use Laminas\Internal\Migrations\LaminasCI;
 use Laminas\Internal\Migrations\LaminasCIWorkflow;
 use Laminas\Internal\Migrations\MagoConfig;
+use Laminas\Internal\Migrations\Makefile;
 use Laminas\Internal\Migrations\PatchComposer;
 use Laminas\Internal\Migrations\ProjectInformation;
 
@@ -60,8 +61,15 @@ if ($project->laminasCiWorkflow !== null) {
     $workflow->write();
 }
 
+// Update Mago Configuration if necessary
 if ($project->magoConfiguration !== null) {
     $mago = new MagoConfig($project->magoConfiguration);
     $mago->setPhpVersionWhenPresentTo('8.3.0');
     $mago->write();
+}
+
+// Update the PHP_VERSION env var in the Project Makefile if it can be found
+if ($project->makefile !== null) {
+    $makefile = new Makefile($project->makefile);
+    $makefile->updatePHPVersionTo('8.3');
 }

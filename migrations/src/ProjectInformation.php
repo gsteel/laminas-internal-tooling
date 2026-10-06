@@ -30,6 +30,9 @@ final readonly class ProjectInformation
      * @param non-empty-string|null $laminasCiConfig
      * @param non-empty-string|null $laminasCiWorkflow
      * @param non-empty-string|null $magoConfiguration
+     * @param non-empty-string|null $makefile
+     *
+     * @mago-expect lint:excessive-parameter-list
      */
     public function __construct(
         public string $projectDirectory,
@@ -37,6 +40,7 @@ final readonly class ProjectInformation
         public string|null $laminasCiConfig,
         public string|null $laminasCiWorkflow,
         public string|null $magoConfiguration,
+        public string|null $makefile,
     ) {}
 
     /** @throws Throwable */
@@ -58,6 +62,7 @@ final readonly class ProjectInformation
             self::fileExistsOrNull($directory . '/.laminas-ci.json'),
             self::findLaminasCIWorkflowInDirectory($directory . '/.github/workflows'),
             self::fileExistsOrNull($directory . '/mago.toml'),
+            self::fileExistsOrNull($directory . '/Makefile'),
         );
     }
 

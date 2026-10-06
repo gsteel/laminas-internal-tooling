@@ -80,3 +80,15 @@ There are a number of `make` targets available for running Mago's suite of tools
 ### PHPUnit Make Targets
 
 - `make test`
+
+## Migrations
+
+Migrations represent small units of automation for common or one-off maintenance tasks for Laminas Repos.
+
+### PHP 8.6 Migration
+
+```bash
+make migrate-to-php86
+```
+
+For more information about this migration [see the README](migrations/PHP-86/README.md).
