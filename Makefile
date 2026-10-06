@@ -63,6 +63,9 @@ include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
 include $(_MAKEFILE_DIR)makefiles/LinkChecker.mk
 include $(_MAKEFILE_DIR)makefiles/Documentation.mk
 
+# Migrations
+include $(_MAKEFILE_DIR)migrations/Migrations.mk
+
 #
 # These clean targets are appended last in the main Makefile because, they need to run last…
 #

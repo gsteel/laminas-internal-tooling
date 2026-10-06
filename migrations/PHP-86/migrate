@@ -1,0 +1,67 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Laminas\Internal\Migrations\LaminasCI;
+use Laminas\Internal\Migrations\LaminasCIWorkflow;
+use Laminas\Internal\Migrations\MagoConfig;
+use Laminas\Internal\Migrations\PatchComposer;
+use Laminas\Internal\Migrations\ProjectInformation;
+
+$paths = [
+    __DIR__ . '/../../../../autoload.php',
+    __DIR__ . '/../../vendor/autoload.php',
+];
+
+$autoloader = null;
+foreach ($paths as $file) {
+    if (! file_exists($file)) {
+        continue;
+    }
+
+    $autoloader = require $file;
+}
+
+if ($autoloader === null) {
+    throw new RuntimeException('Cannot determine autoloader');
+}
+
+/** @var mixed $rootDirectory */
+$rootDirectory = $argv[1] ?? null;
+if (
+    ! is_string($rootDirectory)
+    || $rootDirectory === ''
+    || ! is_dir($rootDirectory)
+) {
+    throw new RuntimeException('Pass a single argument representing the root directory of the target library');
+}
+
+$project = ProjectInformation::fromDirectory($rootDirectory);
+
+// Patch Composer
+(new PatchComposer($project->composerFile))(
+    '8.3.99',
+    '~8.3 || ~8.4 || ~8.5 || ~8.6',
+);
+
+// Enable BC Checker and Ignore Platform Reqs on 8.6
+if ($project->laminasCiConfig !== null) {
+    $laminasCi = new LaminasCI($project->laminasCiConfig);
+    $laminasCi->enableBcChecker();
+    $laminasCi->ignorePlatformReqsOnlyOn('8.6');
+    $laminasCi->write();
+}
+
+// Check for a `default_php` environment variable used in custom jobs
+if ($project->laminasCiWorkflow !== null) {
+    $workflow = new LaminasCIWorkflow($project->laminasCiWorkflow);
+    $workflow->setDefaultPHPEnvironmentVariableIfPresent('8.3');
+    $workflow->write();
+}
+
+if ($project->magoConfiguration !== null) {
+    $mago = new MagoConfig($project->magoConfiguration);
+    $mago->setPhpVersionWhenPresentTo('8.3.0');
+    $mago->write();
+}
