@@ -21,6 +21,8 @@ SHELL ?= /bin/bash
 .DEFAULT_GOAL ?= help
 # The parent directory of _this_ Makefile
 _MAKEFILE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+# The root directory of the project, theoretically…
+PROJECT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 # The Dockerfile to build
 DOCKERFILE ?= "${_MAKEFILE_DIR}Dockerfile"
 
