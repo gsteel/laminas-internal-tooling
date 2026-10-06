@@ -10,6 +10,14 @@ It is not intended for external use.
 composer require laminas/internal-tooling
 ```
 
+Next, copy the shipped `Makefile` template to the root of the project with:
+
+```bash
+cp vendor/laminas/internal-tooling/templates/MakefileTemplate.mk ./Makefile
+```
+
+The template will need some adjustment depending on the project.
+
 ## Requirements
 
 Pretty much everything runs in Docker, so you will need docker installed and running on the host machine for the make targets to work.
@@ -80,3 +88,15 @@ There are a number of `make` targets available for running Mago's suite of tools
 ### PHPUnit Make Targets
 
 - `make test`
+
+## Migrations
+
+Migrations represent small units of automation for common or one-off maintenance tasks for Laminas Repos.
+
+### PHP 8.6 Migration
+
+```bash
+make migrate-to-php86
+```
+
+For more information about this migration [see the README](migrations/PHP-86/README.md).

@@ -1,0 +1,18 @@
+#:schema https://mago.carthage.software/1.51.0/schema.json
+#
+# Project Specific Mago Configuration
+#
+# Don't extend from this file, use ./mago/defaults.toml
+#
+extends = "mago/defaults.toml"
+
+[source]
+workspace = "."
+paths = ["migrations/"]
+
+[analyzer]
+
+ignore = [
+    # Don't check for thrown exceptions in tests
+    { code = "unhandled-thrown-type", in = "migrations/test/" },
+]
