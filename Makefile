@@ -30,6 +30,8 @@ DOCKERFILE ?= "${_MAKEFILE_DIR}Dockerfile"
 MK_BLUE = echo -e "\033[34m"$(1)"\033[0m"
 MK_GREEN = echo -e "\033[32m"$(1)"\033[0m"
 MK_RED = echo -e "\e[31m"$(1)"\e[0m"
+MK_HELP = "\033[36m"$(1)"\033[0m "$(2)"\n"
+
 MK_INFO = @$(call MK_BLUE, $1)
 MK_SUCCESS = @$(call MK_GREEN, $1)
 MK_ERROR = @$(call MK_RED, $1)
@@ -37,6 +39,12 @@ MK_ERROR = @$(call MK_RED, $1)
 # Variables for collecting targets
 QA_TARGETS :=
 CLEAN_TARGETS :=
+
+# The $(HELP) variable collects help text for the `help` target
+HELP := ""
+HELP += $(call MK_HELP,'help','Show this help')
+HELP += $(call MK_HELP,'qa','Run all qa targets')
+HELP += $(call MK_HELP,'clean','Run various clean up jobs')
 
 ifneq ("$(wildcard .env)","")
     include .env
@@ -46,8 +54,8 @@ endif
 # Make Targets Start Here…
 #
 
-help: ## shows this help
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\-\.]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+help:
+	@echo $(HELP)
 .PHONY: help
 
 #
@@ -73,8 +81,8 @@ include $(_MAKEFILE_DIR)migrations/Migrations.mk
 #
 CLEAN_TARGETS := $(CLEAN_TARGETS) uninstall remove-php-image
 
-clean: $(CLEAN_TARGETS)  ## Clean up caches and documentation artifacts
+clean: $(CLEAN_TARGETS)
 .PHONY: clean
 
-qa: $(QA_TARGETS) ## Run all QA targets
+qa: $(QA_TARGETS)
 .PHONY: qa

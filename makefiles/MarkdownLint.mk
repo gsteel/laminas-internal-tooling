@@ -20,20 +20,22 @@ endif
 ifeq ("$(HAS_MARKDOWN)", "TRUE")
     QA_TARGETS := $(QA_TARGETS) docs-lint
     CLEAN_TARGETS := $(CLEAN_TARGETS) remove-mdlint-config
-endif
 
-docs-lint: .markdownlint.json ## Lint Markdown documentation files
+HELP +=$(call MK_HELP,'docs-lint','Lint Markdown documentation files')
+docs-lint: .markdownlint.json
 	@$(call MK_INFO, "Linting documentation files")
 	@$(DOCKER_RUN) ${MDLINT_IMAGE} ${MARKDOWN_FILE_PATTERN}
 .PHONY: docs-lint
 
-.markdownlint.json: ## Fetch the most recent settings for Markdown lint
+.markdownlint.json:
 	@$(call MK_INFO,"Fetching markdown lint configuration")
 	@curl -s -o .markdownlint.json ${MDLINT_CONFIG_FILE}
 
-remove-mdlint-config: ## Remove the downloaded markdown lint config file
+remove-mdlint-config:
 ifneq ("$(wildcard .markdownlint.json)", "")
 	@$(call MK_INFO,"Removing markdown lint configuration")
 	@rm .markdownlint.json
 endif
 .PHONY: remove-mdlint-config
+
+endif

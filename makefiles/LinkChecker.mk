@@ -9,6 +9,10 @@ ifneq ("$(wildcard docs)","")
     CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-link-checker
 endif
 
+ifeq ("$(HAS_DOCS)","TRUE")
+
+HELP += $(call MK_HELP,'docs-check-links','Checks links in the documentation Markdown files')
+
 docs-build-link-checker:
 ifeq ($(strip $(LINK_CHECKER_IMAGE_ID)),)
 docs-build-link-checker: docs-build-link-checker-unconditionally
@@ -28,10 +32,9 @@ docs-build-link-checker-unconditionally:
     	-t ${LINK_CHECKER_IMAGE_NAME} .
 .PHONY: docs-build-link-checker-unconditionally
 
-docs-check-links: ## Check documentation links
-ifeq ("$(HAS_DOCS)","TRUE")
 docs-check-links: docs-build-link-checker
 	@$(call MK_INFO,"Checking links in documentation files")
 	@$(DOCKER_RUN) ${LINK_CHECKER_IMAGE_NAME} -t 5 -qq -f compact "docs/**/*.md" README.md
-endif
 .PHONY: docs-check-links
+
+endif
