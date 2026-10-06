@@ -32,6 +32,6 @@ docs-check-links: ## Check documentation links
 ifeq ("$(HAS_DOCS)","TRUE")
 docs-check-links: docs-build-link-checker
 	@$(call MK_INFO,"Checking links in documentation files")
-	@$(DOCKER_RUN) ${LINK_CHECKER_IMAGE_NAME} -t 5 -qq -f raw "docs/**/*.md" README.md
+	@$(DOCKER_RUN) ${LINK_CHECKER_IMAGE_NAME} -t 5 -qq -f compact "docs/**/*.md" README.md
 endif
 .PHONY: docs-check-links
