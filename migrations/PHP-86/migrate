@@ -3,11 +3,11 @@
 
 declare(strict_types=1);
 
+use Laminas\Internal\Migrations\ComposerFile;
 use Laminas\Internal\Migrations\LaminasCI;
 use Laminas\Internal\Migrations\LaminasCIWorkflow;
 use Laminas\Internal\Migrations\MagoConfig;
 use Laminas\Internal\Migrations\Makefile;
-use Laminas\Internal\Migrations\PatchComposer;
 use Laminas\Internal\Migrations\ProjectInformation;
 
 require __DIR__ . '/../autoloader.php';
@@ -25,10 +25,10 @@ if (
 $project = ProjectInformation::fromDirectory($rootDirectory);
 
 // Patch Composer
-(new PatchComposer($project->composerFile))(
-    '8.3.99',
-    '~8.3 || ~8.4 || ~8.5 || ~8.6',
-);
+$composer = new ComposerFile($project->composerFile);
+$composer->setPlatform('8.3.99');
+$composer->setPhpVersionConstraint('~8.3 || ~8.4 || ~8.5 || ~8.6');
+$composer->write();
 
 // Enable BC Checker and Ignore Platform Reqs on 8.6
 if ($project->laminasCiConfig !== null) {
@@ -73,4 +73,26 @@ if ($project->magoConfiguration !== null) {
 if ($project->makefile !== null) {
     $makefile = new Makefile($project->makefile);
     $makefile->updatePHPVersionTo('8.3');
+}
+
+// Update the composer files for anything in the tools directory
+$toolsDirectory = $project->projectDirectory . '/tools';
+if (is_dir($toolsDirectory) && file_exists($toolsDirectory)) {
+    $iterator = new DirectoryIterator($toolsDirectory);
+    /** @var SplFileInfo&DirectoryIterator $item */
+    foreach ($iterator as $item) {
+        if ($item->isDot() || ! $item->isDir()) {
+            continue;
+        }
+
+        $file = $item->getRealPath() . '/composer.json';
+        if (! file_exists($file)) {
+            continue;
+        }
+
+        $composer = new ComposerFile($file);
+        $composer->setPlatform('8.3.99');
+        $composer->setPhpVersionConstraint('~8.3 || ~8.4 || ~8.5 || ~8.6');
+        $composer->write();
+    }
 }
