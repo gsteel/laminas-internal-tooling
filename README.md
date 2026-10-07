@@ -89,6 +89,13 @@ There are a number of `make` targets available for running Mago's suite of tools
 
 - `make test`
 
+### Rector Targets
+
+When rector is installed to `./tools/rector`
+
+- `make rector` (Run rector with --dry-run)
+- `make rector-fix`
+
 ## Migrations
 
 Migrations represent small units of automation for common or one-off maintenance tasks for Laminas Repos.
@@ -100,3 +107,13 @@ make migrate-to-php86
 ```
 
 For more information about this migration [see the README](migrations/PHP-86/README.md).
+
+### Rector Installation
+
+Install rector into `./tools/rector`
+
+```bash
+make install-rector
+```
+
+For more information about this migration [see the README](migrations/InstallStandaloneRector/README.md).

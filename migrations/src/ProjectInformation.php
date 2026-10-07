@@ -41,6 +41,7 @@ final readonly class ProjectInformation
         public string|null $laminasCiWorkflow,
         public string|null $magoConfiguration,
         public string|null $makefile,
+        public string $gitAttributes,
     ) {}
 
     /** @throws Throwable */
@@ -63,6 +64,7 @@ final readonly class ProjectInformation
             self::findLaminasCIWorkflowInDirectory($directory . '/.github/workflows'),
             self::fileExistsOrNull($directory . '/mago.toml'),
             self::fileExistsOrNull($directory . '/Makefile'),
+            self::assertFileExists($directory . '/.gitattributes'),
         );
     }
 

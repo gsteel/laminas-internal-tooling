@@ -10,23 +10,7 @@ use Laminas\Internal\Migrations\Makefile;
 use Laminas\Internal\Migrations\PatchComposer;
 use Laminas\Internal\Migrations\ProjectInformation;
 
-$paths = [
-    __DIR__ . '/../../../../autoload.php',
-    __DIR__ . '/../../vendor/autoload.php',
-];
-
-$autoloader = null;
-foreach ($paths as $file) {
-    if (! file_exists($file)) {
-        continue;
-    }
-
-    $autoloader = require $file;
-}
-
-if ($autoloader === null) {
-    throw new RuntimeException('Cannot determine autoloader');
-}
+require __DIR__ . '/../autoloader.php';
 
 /** @var mixed $rootDirectory */
 $rootDirectory = $argv[1] ?? null;

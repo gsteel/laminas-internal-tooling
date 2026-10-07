@@ -26,6 +26,11 @@ PROJECT_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 # The Dockerfile to build
 DOCKERFILE ?= "${_MAKEFILE_DIR}Dockerfile"
 
+# The directory where standalone tooling is installed
+TOOLS_DIR := $(PROJECT_DIR)tools
+# Whether the tools directory exists
+HAS_TOOLS := $(strip $(shell if [ -d $(TOOLS_DIR) ]; then echo TRUE; fi))
+
 # Formatting Macros
 MK_BLUE = echo -e "\033[34m"$(1)"\033[0m"
 MK_GREEN = echo -e "\033[32m"$(1)"\033[0m"
@@ -39,6 +44,8 @@ MK_ERROR = @$(call MK_RED, $1)
 # Variables for collecting targets
 QA_TARGETS :=
 CLEAN_TARGETS :=
+BUMP_TOOLS_TARGETS :=
+UPDATE_TOOLS_TARGETS :=
 
 # The $(HELP) variable collects help text for the `help` target
 HELP := ""
@@ -68,6 +75,11 @@ include $(_MAKEFILE_DIR)makefiles/Mago.mk
 include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
+include $(_MAKEFILE_DIR)makefiles/Rector.mk
+
+# Include the Tools fragment after all other tooling so that bump and update of stand-alone tools collects all necessary targets
+include $(_MAKEFILE_DIR)makefiles/Tools.mk
+
 # Run docs checks later during QA runs by moving them to the end of the inclusion list
 include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
 include $(_MAKEFILE_DIR)makefiles/LinkChecker.mk
