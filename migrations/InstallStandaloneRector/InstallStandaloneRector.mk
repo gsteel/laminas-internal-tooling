@@ -11,8 +11,7 @@ install-rector: .github/workflows/rector.yml $(RECTOR_DIRECTORY) _do-install-rec
 .PHONY: install-rector
 
 _do-install-rector:
-	@$(call MK_INFO,"Installing Rector")
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
+	@$(DOCKER_RUN) --env PHP_EXTENSIONS="$(PHP_EXTENSIONS)" ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
 .PHONY: _do-install-rector
 
 # Installation routine for rector:

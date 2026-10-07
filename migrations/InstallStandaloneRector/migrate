@@ -36,4 +36,11 @@ $workflowFile = new LaminasCIWorkflow(sprintf(
     '/.github/workflows/rector.yml',
 ));
 $workflowFile->setDefaultPHPEnvironmentVariableIfPresent($defaultPHP);
+
+// And PHP extensions to match configuration in the Makefile
+$extensions = $_ENV['PHP_EXTENSIONS'] ?? '';
+if ($extensions !== '') {
+    $workflowFile->setPhpExtensionsFromSpaceSeparatedEnvironmentVariable($extensions);
+}
+
 $workflowFile->write();

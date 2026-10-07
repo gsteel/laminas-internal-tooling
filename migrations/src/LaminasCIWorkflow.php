@@ -55,6 +55,22 @@ final class LaminasCIWorkflow
         $this->isDirty                    = true;
     }
 
+    public function setPhpExtensionsFromSpaceSeparatedEnvironmentVariable(string $env): void
+    {
+        if (! array_key_exists('env', $this->data) || ! is_array($this->data['env'])) {
+            return;
+        }
+
+        if (! array_key_exists('php_extensions', $this->data['env'])) {
+            return;
+        }
+
+        $value = implode(',', explode(' ', $env));
+
+        $this->data['env']['php_extensions'] = $value;
+        $this->isDirty                       = true;
+    }
+
     public function write(): void
     {
         if (! $this->isDirty) {
