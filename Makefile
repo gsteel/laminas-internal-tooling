@@ -68,6 +68,7 @@ include $(_MAKEFILE_DIR)makefiles/Mago.mk
 include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
+include $(_MAKEFILE_DIR)makefiles/Rector.mk
 # Run docs checks later during QA runs by moving them to the end of the inclusion list
 include $(_MAKEFILE_DIR)makefiles/MarkdownLint.mk
 include $(_MAKEFILE_DIR)makefiles/LinkChecker.mk

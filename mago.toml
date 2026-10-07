@@ -9,7 +9,9 @@ extends = "mago/defaults.toml"
 [source]
 workspace = "."
 paths = ["migrations/"]
-
+excludes = [
+    "migrations/*/templates/rector.php",
+]
 [analyzer]
 
 ignore = [
