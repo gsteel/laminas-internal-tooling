@@ -21,6 +21,7 @@ use function json_encode;
 
 use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
+use const JSON_UNESCAPED_SLASHES;
 
 final class ComposerFile
 {
@@ -134,7 +135,7 @@ final class ComposerFile
             $this->file,
             json_encode(
                 $this->data,
-                JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT,
+                JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
             ),
         );
     }
