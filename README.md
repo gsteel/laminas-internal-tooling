@@ -108,6 +108,17 @@ make migrate-to-php86
 
 For more information about this migration [see the README](migrations/PHP-86/README.md).
 
+### Install Mago
+
+```bash
+make install-mago
+```
+
+This adds mago as a direct dependency of the project, initialises a sensible default configuration and empty baselines.
+Also adds these files to export ignores.
+
+The target is only available if `./mago.toml` does not already exist.
+
 ### Rector Installation
 
 Install rector into `./tools/rector`

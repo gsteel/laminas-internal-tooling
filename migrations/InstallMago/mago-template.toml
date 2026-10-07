@@ -1,0 +1,12 @@
+#:schema https://mago.carthage.software/1.51.0/schema.json
+#
+# Project Specific Mago Configuration
+#
+extends = "vendor/laminas/internal-tooling/mago/defaults.toml"
+php-version = "8.2.0"
+
+[source]
+paths = [
+    "src",
+    "test",
+]

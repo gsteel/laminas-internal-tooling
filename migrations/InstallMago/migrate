@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Laminas\Internal\Migrations\ComposerFile;
+use Laminas\Internal\Migrations\GitAttributes;
+use Laminas\Internal\Migrations\MagoConfig;
+use Laminas\Internal\Migrations\ProjectInformation;
+
+require __DIR__ . '/../autoloader.php';
+
+/** @var mixed $rootDirectory */
+$rootDirectory = $argv[1] ?? null;
+if (
+    ! is_string($rootDirectory)
+    || $rootDirectory === ''
+    || ! is_dir($rootDirectory)
+) {
+    throw new RuntimeException('Pass a single argument representing the root directory of the target library');
+}
+
+$project = ProjectInformation::fromDirectory($rootDirectory);
+
+$attributes = new GitAttributes($project->gitAttributes);
+$attributes->ignore('mago.toml');
+$attributes->ignore('baseline.lint.toml');
+$attributes->ignore('baseline.sa.toml');
+
+$composer = new ComposerFile($project->composerFile);
+
+if ($project->magoConfiguration) {
+    $magoConfig = new MagoConfig($project->magoConfiguration);
+    $magoConfig->setPhpVersionWhenPresentTo($composer->minimumPHPVersionAsMinor());
+    $magoConfig->write();
+}
