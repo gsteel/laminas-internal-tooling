@@ -2,23 +2,29 @@
 # Make targets for PHP dependency management with composer
 #
 
-install: build-php-image ## Install composer dependencies from composer.json
+HELP += $(call MK_HELP,'install','Install composer dependencies from composer.json')
+HELP += $(call MK_HELP,'update','Update composer dependencies')
+HELP += $(call MK_HELP,'outdated','Show outdated dependencies')
+HELP += $(call MK_HELP,'bump-dev','Bump development composer dependencies')
+HELP += $(call MK_HELP,'uninstall','Remove composer dependencies')
+
+install: build-php-image
 ifeq ("$(wildcard vendor)","")
 	@$(call MK_INFO,"Installing PHP Dependencies")
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer install
 endif
 .PHONY: install
 
-update: install ## Update composer dependencies
+update: install
 	@$(call MK_INFO,"Updating PHP Dependencies")
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer update
 .PHONY: update
 
-outdated: install ## Show outdated dependencies
+outdated: install
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer outdated
 .PHONY: outdated
 
-bump-dev: update ## Bump development composer dependencies
+bump-dev: update
 	@$(call MK_INFO,"Bumping Development Dependencies")
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer bump -D
 	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer update

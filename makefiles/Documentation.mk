@@ -10,19 +10,17 @@ ifneq ("$(wildcard mkdocs.yml)","")
 endif
 endif
 
+
+ifeq ("$(HAS_DOCS)","TRUE")
+
+HELP += $(call MK_HELP,'docs-build','Build the docs static HTML files using a Docker container')
+
 # Fetch the documentation theme repo
 documentation-theme:
 	git clone git@github.com:laminas/documentation-theme.git
 
-# Conditionally fetch the theme based on the presence of mkdocs.yml and ./docs
-docs-fetch-theme:
-ifeq ("$(HAS_DOCS)","TRUE")
-docs-fetch-theme: documentation-theme
-endif
-.PHONY: docs-fetch-theme
-
 # Build the MkDocs image with necessary dependencies for building the docs
-docs-build-mkdocs-image: docs-fetch-theme
+docs-build-mkdocs-image: documentation-theme
 ifeq ("$(HAS_DOCS)","TRUE")
 ifeq ($(strip $(MKDOCS_IMAGE_ID)),)
 	@cd documentation-theme/builder && docker build -t $(MKDOCS_IMAGE_NAME) .
@@ -32,13 +30,9 @@ else
 endif
 .PHONY: docs-build-mkdocs-image
 
-docs-build: docs-build-mkdocs-image ## build the docs using a Docker container
-ifeq ("$(HAS_DOCS)","TRUE")
+docs-build: docs-build-mkdocs-image
 	@$(DOCKER_RUN) $(MKDOCS_IMAGE_NAME) ./documentation-theme/build.sh -u https://www.example.com
 	$(info ${PWD}/docs/html/index.html)
-else
-	@$(call MK_INFO,"No docs can be found for this project")
-endif
 .PHONY: docs-build
 
 # Removes the docker image for MkDocs
@@ -54,3 +48,5 @@ docs-rm-theme-files:
 	@rm -rf documentation-theme
 	@rm -rf docs/html
 .PHONY: docs-rm-theme-files
+
+endif
