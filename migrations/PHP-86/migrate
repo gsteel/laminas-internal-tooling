@@ -62,12 +62,6 @@ if (is_dir($workflowDirectory)) {
     }
 }
 
-if ($project->laminasCiWorkflow !== null) {
-    $workflow = new LaminasCIWorkflow($project->laminasCiWorkflow);
-    $workflow->setDefaultPHPEnvironmentVariableIfPresent('8.3');
-    $workflow->write();
-}
-
 // Update Mago Configuration if necessary
 if ($project->magoConfiguration !== null) {
     $mago = new MagoConfig($project->magoConfiguration);
