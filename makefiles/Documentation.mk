@@ -6,12 +6,21 @@ HAS_DOCS = FALSE
 ifneq ("$(wildcard docs)","")
 ifneq ("$(wildcard mkdocs.yml)","")
     HAS_DOCS = TRUE
-    CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-mkdocs-image docs-rm-theme-files
+    LAMINAS_DOCS_DIRECTORY := $(PROJECT_DIR)docs
+endif
+endif
+
+ifneq ("$(wildcard doc)","")
+ifneq ("$(wildcard mkdocs.yml)","")
+    HAS_DOCS = TRUE
+    LAMINAS_DOCS_DIRECTORY := $(PROJECT_DIR)doc
 endif
 endif
 
 
 ifeq ("$(HAS_DOCS)","TRUE")
+
+CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-mkdocs-image docs-rm-theme-files
 
 HELP += $(call MK_HELP,'docs-build','Build the docs static HTML files using a Docker container')
 
@@ -32,7 +41,7 @@ endif
 
 docs-build: docs-build-mkdocs-image
 	@$(DOCKER_RUN) $(MKDOCS_IMAGE_NAME) ./documentation-theme/build.sh -u https://www.example.com
-	$(info ${PWD}/docs/html/index.html)
+	$(info $(LAMINAS_DOCS_DIRECTORY)/html/index.html)
 .PHONY: docs-build
 
 # Removes the docker image for MkDocs
@@ -46,7 +55,7 @@ endif
 # Removes `./documentation-theme`
 docs-rm-theme-files:
 	@rm -rf documentation-theme
-	@rm -rf docs/html
+	@rm -rf $(LAMINAS_DOCS_DIRECTORY)/html
 .PHONY: docs-rm-theme-files
 
 endif
