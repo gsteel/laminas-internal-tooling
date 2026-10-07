@@ -9,7 +9,7 @@ endif
 
 ifeq ("$(HAS_MAGO)","FALSE")
 
-CURRENT_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+_MAGO_MIGRATION_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 HELP += $(call MK_HELP,'install-mago','Install Mago with initial configuration')
 
@@ -17,12 +17,12 @@ install-mago: _do-mago-composer-install $(PROJECT_DIR)mago.toml _do-mago-migrati
 .PHONY: install-mago
 
 $(PROJECT_DIR)mago.toml:
-	cp $(CURRENT_DIRECTORY)mago-template.toml $(PROJECT_DIR)mago.toml
-	cp $(CURRENT_DIRECTORY)baseline-template.toml $(PROJECT_DIR)baseline.lint.toml
-	cp $(CURRENT_DIRECTORY)baseline-template.toml $(PROJECT_DIR)baseline.sa.toml
+	cp $(_MAGO_MIGRATION_DIRECTORY)mago-template.toml $(PROJECT_DIR)mago.toml
+	cp $(_MAGO_MIGRATION_DIRECTORY)baseline-template.toml $(PROJECT_DIR)baseline.lint.toml
+	cp $(_MAGO_MIGRATION_DIRECTORY)baseline-template.toml $(PROJECT_DIR)baseline.sa.toml
 
 _do-mago-migration-tasks:
-	$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
+	$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(_MAGO_MIGRATION_DIRECTORY)migrate $(PROJECT_DIR)
 .PHONY: _do-mago-migration-tasks
 
 _do-mago-composer-install:

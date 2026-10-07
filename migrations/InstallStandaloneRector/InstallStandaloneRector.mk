@@ -1,4 +1,4 @@
-CURRENT_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+_RECTOR_MIGRATION_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RECTOR_DIRECTORY := $(PROJECT_DIR)tools/rector
 HAS_RECTOR_DIR := $(strip $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo TRUE; fi))
 
@@ -11,7 +11,7 @@ install-rector: .github/workflows/rector.yml $(RECTOR_DIRECTORY) _do-install-rec
 .PHONY: install-rector
 
 _do-install-rector:
-	@$(DOCKER_RUN) --env PHP_EXTENSIONS="$(PHP_EXTENSIONS)" ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
+	@$(DOCKER_RUN) --env PHP_EXTENSIONS="$(PHP_EXTENSIONS)" ${DOCKER_IMAGE_NAME} php $(_RECTOR_MIGRATION_DIRECTORY)migrate $(PROJECT_DIR)
 .PHONY: _do-install-rector
 
 # Installation routine for rector:
@@ -24,7 +24,7 @@ $(RECTOR_DIRECTORY):
 	$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer \
 		--working-dir=$(RECTOR_DIRECTORY) \
 		require --dev rector/rector
-	cp $(CURRENT_DIRECTORY)templates/rector.php $(RECTOR_DIRECTORY)/
+	cp $(_RECTOR_MIGRATION_DIRECTORY)templates/rector.php $(RECTOR_DIRECTORY)/
 	echo vendor > $(RECTOR_DIRECTORY)/.gitignore
 	$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer \
     		--working-dir=$(RECTOR_DIRECTORY) \
@@ -33,6 +33,6 @@ $(RECTOR_DIRECTORY):
 
 # Install the default workflow for rector in CI
 .github/workflows/rector.yml:
-	cp $(CURRENT_DIRECTORY)templates/github-workflow.yml .github/workflows/rector.yml
+	cp $(_RECTOR_MIGRATION_DIRECTORY)templates/github-workflow.yml .github/workflows/rector.yml
 
 endif
