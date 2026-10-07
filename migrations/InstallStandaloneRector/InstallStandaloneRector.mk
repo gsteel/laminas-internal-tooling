@@ -1,6 +1,6 @@
 CURRENT_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RECTOR_DIRECTORY := $(PROJECT_DIR)tools/rector
-HAS_RECTOR_DIR := $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo -n TRUE; fi)
+HAS_RECTOR_DIR := $(strip $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo TRUE; fi))
 
 ifneq ("$(HAS_RECTOR_DIR)","TRUE")
 
