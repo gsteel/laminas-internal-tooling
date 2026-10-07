@@ -3,7 +3,9 @@
 
 declare(strict_types=1);
 
+use Laminas\Internal\Migrations\ComposerFile;
 use Laminas\Internal\Migrations\GitAttributes;
+use Laminas\Internal\Migrations\LaminasCIWorkflow;
 use Laminas\Internal\Migrations\ProjectInformation;
 
 require __DIR__ . '/../autoloader.php';
@@ -20,5 +22,18 @@ if (
 
 $project = ProjectInformation::fromDirectory($rootDirectory);
 
+// Ensure that the 'tools' directory is export-ignored
 $attributes = new GitAttributes($project->gitAttributes);
 $attributes->ignore('tools');
+
+// Ensure that the rector workflow is using the current default PHP version
+$composer = new ComposerFile($project->composerFile);
+$defaultPHP = $composer->minimumPHPVersionAsMinor();
+
+$workflowFile = new LaminasCIWorkflow(sprintf(
+    '%s/%s',
+    $project->projectDirectory,
+    '/.github/workflows/rector.yml',
+));
+$workflowFile->setDefaultPHPEnvironmentVariableIfPresent($defaultPHP);
+$workflowFile->write();
