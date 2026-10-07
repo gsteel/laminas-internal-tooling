@@ -7,14 +7,12 @@ ifneq ("$(HAS_RECTOR_DIR)","TRUE")
 PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer config platform.php)
 HELP += $(call MK_HELP,'install-rector','Install a standalone copy of rector into tools/rector')
 
-install-rector: _do-install-rector $(RECTOR_DIRECTORY)
+install-rector: .github/workflows/rector.yml $(RECTOR_DIRECTORY) _do-install-rector
 .PHONY: install-rector
 
 _do-install-rector:
-	@$(call MK_INFO,"Installing Rector")
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
+	@$(DOCKER_RUN) --env PHP_EXTENSIONS="$(PHP_EXTENSIONS)" ${DOCKER_IMAGE_NAME} php $(CURRENT_DIRECTORY)migrate $(PROJECT_DIR)
 .PHONY: _do-install-rector
-
 
 # Installation routine for rector:
 $(RECTOR_DIRECTORY):
@@ -32,5 +30,9 @@ $(RECTOR_DIRECTORY):
     		--working-dir=$(RECTOR_DIRECTORY) \
     		install
 # end
+
+# Install the default workflow for rector in CI
+.github/workflows/rector.yml:
+	cp $(CURRENT_DIRECTORY)templates/github-workflow.yml .github/workflows/rector.yml
 
 endif

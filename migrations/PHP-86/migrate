@@ -39,10 +39,27 @@ if ($project->laminasCiConfig !== null) {
 }
 
 // Check for a `default_php` environment variable used in custom jobs
-if ($project->laminasCiWorkflow !== null) {
-    $workflow = new LaminasCIWorkflow($project->laminasCiWorkflow);
-    $workflow->setDefaultPHPEnvironmentVariableIfPresent('8.3');
-    $workflow->write();
+$workflowDirectory = sprintf(
+    '%s/%s',
+    $project->projectDirectory,
+    '.github/workflows',
+);
+
+if (is_dir($workflowDirectory)) {
+    $iterator = new DirectoryIterator($workflowDirectory);
+    foreach ($iterator as $item) {
+        if (! $item->isFile() || $item->isDot()) {
+            continue;
+        }
+
+        if (! preg_match('/(.yml|.yaml)$/', $item->getBasename())) {
+            continue;
+        }
+
+        $workflow = new LaminasCIWorkflow($item->getRealPath());
+        $workflow->setDefaultPHPEnvironmentVariableIfPresent('8.3');
+        $workflow->write();
+    }
 }
 
 // Update Mago Configuration if necessary
