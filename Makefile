@@ -46,6 +46,7 @@ QA_TARGETS :=
 CLEAN_TARGETS :=
 BUMP_TOOLS_TARGETS :=
 UPDATE_TOOLS_TARGETS :=
+INSTALL_TOOLS_TARGETS :=
 
 # The $(HELP) variable collects help text for the `help` target
 HELP := ""
@@ -76,6 +77,7 @@ include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
 include $(_MAKEFILE_DIR)makefiles/Rector.mk
+include $(_MAKEFILE_DIR)makefiles/Infection.mk
 include $(_MAKEFILE_DIR)makefiles/Utilities.mk
 
 # Include the Tools fragment after all other tooling so that bump and update of stand-alone tools collects all necessary targets

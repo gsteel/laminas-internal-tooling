@@ -5,6 +5,12 @@
 HAS_MAGO = FALSE
 ifneq ("$(wildcard mago.toml)","")
     HAS_MAGO = TRUE
+
+# Redefine this target so its a no-op when mago is already installed
+install-mago:
+	@echo Mago is already installed
+.PHONY: install-mago
+
 endif
 
 ifeq ("$(HAS_MAGO)","FALSE")
