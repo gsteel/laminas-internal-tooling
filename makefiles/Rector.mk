@@ -6,6 +6,7 @@ ifeq ("$(HAS_RECTOR)", "TRUE")
 
 BUMP_TOOLS_TARGETS += rector-bump
 UPDATE_TOOLS_TARGETS += rector-update
+INSTALL_TOOLS_TARGETS += rector-install
 
 HELP += $(call MK_HELP,'rector','Check the codebase with Rector')
 QA_TARGETS += rector
@@ -24,6 +25,12 @@ rector-update:
     		--working-dir=$(RECTOR_DIRECTORY) \
     		update
 .PHONY: rector-update
+
+rector-install:
+	$(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer \
+    		--working-dir=$(RECTOR_DIRECTORY) \
+    		install
+.PHONY: rector-install
 
 rector-bump: rector-update _do-rector-bump rector-update
 .PHONY: rector-bump

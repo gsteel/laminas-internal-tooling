@@ -17,4 +17,10 @@ bump-tools: $(BUMP_TOOLS_TARGETS)
 .PHONY: bump-tools
 endif
 
+ifneq ($(strip $(INSTALL_TOOLS_TARGETS)), "")
+HELP += $(call MK_HELP,'install-tools','Install all standalone tools')
+install-tools: $(INSTALL_TOOLS_TARGETS)
+.PHONY: install-tools
+endif
+
 endif

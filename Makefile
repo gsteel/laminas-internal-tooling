@@ -46,6 +46,7 @@ QA_TARGETS :=
 CLEAN_TARGETS :=
 BUMP_TOOLS_TARGETS :=
 UPDATE_TOOLS_TARGETS :=
+INSTALL_TOOLS_TARGETS :=
 
 # The $(HELP) variable collects help text for the `help` target
 HELP := ""
