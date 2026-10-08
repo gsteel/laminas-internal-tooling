@@ -8,6 +8,8 @@ BUMP_TOOLS_TARGETS += rector-bump
 UPDATE_TOOLS_TARGETS += rector-update
 
 HELP += $(call MK_HELP,'rector','Check the codebase with Rector')
+QA_TARGETS += rector
+
 rector:
 	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) $(RECTOR_DIRECTORY)/vendor/bin/rector process --dry-run -c $(RECTOR_DIRECTORY)/rector.php
 .PHONY: rector
