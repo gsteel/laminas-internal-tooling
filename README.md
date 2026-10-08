@@ -32,12 +32,8 @@ Other host machine dependencies include:
 
 ### Out-of-the-box `Makefile`
 
-Create a Makefile in the project root with the following contents, after installing this dependency via composer:
-
-```makefile
-# ./Makefile
-include vendor/laminas/internal-tooling/Makefile
-```
+After copying the shipped `Makefile` template, it will need a few minor adjustments.
+These are documented in the template.
 
 Now, running `make` should list a number of useful targets for general QA work on Laminas and Mezzio libraries.
 
@@ -96,6 +92,33 @@ When rector is installed to `./tools/rector`
 - `make rector` (Run rector with --dry-run)
 - `make rector-fix`
 
+### Infection Targets
+
+When infection is installed to `./tools/infection`
+
+- `make infection`
+
+### StructArmed Targets
+
+When [StructArmed](https://boundwize.github.io/structarmed/) is installed to `./tools/structarmed`
+
+- `make structarmed` Runs the analysis
+- `make structarmed-fix` Runs auto fixers
+- `make structarmed-clear` Clears the cache
+
+### Dependency Management Targets
+
+- `make install` - Often not required because this lib is distributed via composer itself
+- `make update` - Runs composer update with the project docker image
+- `make bump-dev` - Bumps _development_ dependencies
+- `make outdated` - Run `composer outdated`
+
+For tools that are installed in subdirectories, it's a pain to cd to each one and run composer for each tool, therefore these targets operate on all installed tools:
+
+- `make install-tools`
+- `make update-tools`
+- `make bump-tools`
+
 ## Migrations
 
 Migrations represent small units of automation for common or one-off maintenance tasks for Laminas Repos.
@@ -127,7 +150,26 @@ Install rector into `./tools/rector`
 make install-rector
 ```
 
-For more information about this migration [see the README](migrations/InstallStandaloneRector/README.md).
+### Infection Installation
+
+Install [infection](https://infection.github.io/) into `./tools/infection`
+
+```bash
+make install-infection
+```
+
+By default, the Min MSI is not configured, so tweaking the configuration file may be necessary.
+Additionally, depending on what version of PHPUnit is installed, some settings may need adjusting for PHPUnit such as `executionOrder`
+
+### StructArmed Installation
+
+Install [StructArmed](https://boundwize.github.io/structarmed/) into `./tools/structarmed`
+
+```bash
+make install-structarmed
+```
+
+Once installed, further [configuration](https://boundwize.github.io/structarmed/quick-start/) will be required.
 
 ### Psalm Removal
 
