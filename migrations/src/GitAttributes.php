@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Laminas\Internal\Migrations;
 
 use function assert;
+use function count;
 use function explode;
 use function file_get_contents;
 use function file_put_contents;
+use function implode;
 use function ltrim;
 use function sprintf;
 use function str_starts_with;
@@ -41,6 +43,38 @@ final readonly class GitAttributes
         );
 
         $this->write($content);
+    }
+
+    public function unignore(string $path): void
+    {
+        $unmodifiedLines = $this->getLines();
+        $lines           = $unmodifiedLines;
+
+        foreach ($lines as $index => $line) {
+            if (! $this->isExportIgnoreLine($line)) {
+                continue;
+            }
+
+            $result = str_starts_with(
+                ltrim(trim($line), DIRECTORY_SEPARATOR),
+                ltrim(trim($path), DIRECTORY_SEPARATOR),
+            );
+
+            if (! $result) {
+                continue;
+            }
+
+            unset($lines[$index]);
+        }
+
+        if (count($unmodifiedLines) === count($lines)) {
+            return;
+        }
+
+        $data = implode(PHP_EOL, $lines);
+        assert($data !== '', 'We should not have an empty file here');
+
+        $this->write($data);
     }
 
     private function isExportIgnored(string $path): bool

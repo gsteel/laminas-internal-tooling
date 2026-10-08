@@ -128,3 +128,7 @@ make install-rector
 ```
 
 For more information about this migration [see the README](migrations/InstallStandaloneRector/README.md).
+
+### Psalm Removal
+
+Psalm can be removed from the project with `make uninstall-psalm` if Psalm is installed.
