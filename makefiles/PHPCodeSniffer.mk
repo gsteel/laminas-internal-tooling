@@ -23,12 +23,12 @@ ifeq ("$(HAS_PHPCS)","TRUE")
 
 phpcs: install
 	@$(call MK_INFO,"Checking coding standards")
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/phpcs
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/phpcs
 .PHONY: phpcs
 
 phpcbf: install
 	@$(call MK_INFO,"Fixing coding standards")
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/phpcbf
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/phpcbf
 .PHONY: phpcs
 
 ifneq ("$(PHPCS_CACHE_FILE)", "")
