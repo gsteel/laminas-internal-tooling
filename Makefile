@@ -77,6 +77,7 @@ include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
 include $(_MAKEFILE_DIR)makefiles/Rector.mk
+include $(_MAKEFILE_DIR)makefiles/Infection.mk
 include $(_MAKEFILE_DIR)makefiles/Utilities.mk
 
 # Include the Tools fragment after all other tooling so that bump and update of stand-alone tools collects all necessary targets

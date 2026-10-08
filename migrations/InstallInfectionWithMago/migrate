@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Laminas\Internal\Migrations\ComposerFile;
+use Laminas\Internal\Migrations\GitAttributes;
+use Laminas\Internal\Migrations\LaminasCIWorkflow;
+use Laminas\Internal\Migrations\ProjectInformation;
+
+require __DIR__ . '/../autoloader.php';
+
+/** @var mixed $rootDirectory */
+$rootDirectory = $argv[1] ?? null;
+if (
+    ! is_string($rootDirectory)
+    || $rootDirectory === ''
+    || ! is_dir($rootDirectory)
+) {
+    throw new RuntimeException('Pass a single argument representing the root directory of the target library');
+}
+
+$project = ProjectInformation::fromDirectory($rootDirectory);
+
+// Ensure that the 'tools' directory is export-ignored
+$attributes = new GitAttributes($project->gitAttributes);
+$attributes->ignore('tools');
+
+// Infection configuration in the root should be export ignored
+$attributes->ignore('infection.json');
+
+// Ensure that the infection workflow is using the current default PHP version
+$composer = new ComposerFile($project->composerFile);
+$defaultPHP = $composer->minimumPHPVersionAsMinor();
+
+$workflowFile = new LaminasCIWorkflow(sprintf(
+    '%s/%s',
+    $project->projectDirectory,
+    '/.github/workflows/infection.yml',
+));
+$workflowFile->setDefaultPHPEnvironmentVariableIfPresent($defaultPHP);
+
+// And PHP extensions to match configuration in the Makefile
+$extensions = $_ENV['PHP_EXTENSIONS'] ?? '';
+if ($extensions !== '') {
+    $workflowFile->setPhpExtensionsFromSpaceSeparatedEnvironmentVariable($extensions);
+}
+
+$workflowFile->write();
