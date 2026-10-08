@@ -4,12 +4,23 @@ LINK_CHECKER_DOCKERFILE := $(_MAKEFILE_DIR)link-checker/Dockerfile
 LINK_CHECKER_IMAGE_ID := $(shell docker images -q ${LINK_CHECKER_IMAGE_NAME} | xargs)
 
 ifneq ("$(wildcard docs)","")
+ifneq ("$(wildcard mkdocs.yml)","")
     HAS_DOCS = TRUE
-    QA_TARGETS := $(QA_TARGETS) docs-check-links
-    CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-link-checker
+    LAMINAS_DOCS_DIRECTORY := $(PROJECT_DIR)docs
+endif
+endif
+
+ifneq ("$(wildcard doc)","")
+ifneq ("$(wildcard mkdocs.yml)","")
+    HAS_DOCS = TRUE
+    LAMINAS_DOCS_DIRECTORY := $(PROJECT_DIR)doc
+endif
 endif
 
 ifeq ("$(HAS_DOCS)","TRUE")
+
+QA_TARGETS := $(QA_TARGETS) docs-check-links
+CLEAN_TARGETS := $(CLEAN_TARGETS) docs-rm-link-checker
 
 HELP += $(call MK_HELP,'docs-check-links','Checks links in the documentation Markdown files')
 
@@ -34,7 +45,7 @@ docs-build-link-checker-unconditionally:
 
 docs-check-links: docs-build-link-checker
 	@$(call MK_INFO,"Checking links in documentation files")
-	@$(DOCKER_RUN) ${LINK_CHECKER_IMAGE_NAME} -t 5 -qq -f compact "docs/**/*.md" README.md
+	@$(DOCKER_RUN) ${LINK_CHECKER_IMAGE_NAME} -t 5 -qq -f compact "$(LAMINAS_DOCS_DIRECTORY)/**/*.md" README.md
 .PHONY: docs-check-links
 
 endif

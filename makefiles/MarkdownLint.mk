@@ -6,8 +6,19 @@ MDLINT_CONFIG_FILE ?= https://raw.githubusercontent.com/laminas/laminas-continuo
 MDLINT_IMAGE ?= davidanson/markdownlint-cli2:v0.23.2
 # File pattern passed to markdownlint-cli2
 MARKDOWN_FILE_PATTERN ?= *.md !COPYRIGHT.md !LICENSE.md
+
 ifneq ("$(wildcard docs)","")
+ifneq ("$(wildcard mkdocs.yml)","")
+    HAS_DOCS = TRUE
     MARKDOWN_FILE_PATTERN := $(MARKDOWN_FILE_PATTERN) docs/**/*.md
+endif
+endif
+
+ifneq ("$(wildcard doc)","")
+ifneq ("$(wildcard mkdocs.yml)","")
+    HAS_DOCS = TRUE
+    MARKDOWN_FILE_PATTERN := $(MARKDOWN_FILE_PATTERN) doc/**/*.md
+endif
 endif
 
 $(eval MD_FILE_COUNT := $(shell find . -type f -name '*.md' -prune \( \! -path '*/vendor/*' \) -prune \( \! -path '*/tools/*' \) -print | wc -l))
