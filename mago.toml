@@ -11,6 +11,7 @@ workspace = "."
 paths = ["migrations/"]
 excludes = [
     "migrations/*/templates/rector.php",
+    "migrations/*/structarmed.php",
 ]
 [analyzer]
 
