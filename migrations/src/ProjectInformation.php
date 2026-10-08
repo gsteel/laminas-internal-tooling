@@ -31,6 +31,8 @@ final readonly class ProjectInformation
      * @param non-empty-string|null $laminasCiWorkflow
      * @param non-empty-string|null $magoConfiguration
      * @param non-empty-string|null $makefile
+     * @param non-empty-string $gitAttributes
+     * @param non-empty-string $gitIgnore
      *
      * @mago-expect lint:excessive-parameter-list
      */
@@ -42,6 +44,7 @@ final readonly class ProjectInformation
         public string|null $magoConfiguration,
         public string|null $makefile,
         public string $gitAttributes,
+        public string $gitIgnore,
     ) {}
 
     /** @throws Throwable */
@@ -65,6 +68,7 @@ final readonly class ProjectInformation
             self::fileExistsOrNull($directory . '/mago.toml'),
             self::fileExistsOrNull($directory . '/Makefile'),
             self::assertFileExists($directory . '/.gitattributes'),
+            self::assertFileExists($directory . '/.gitignore'),
         );
     }
 
