@@ -30,7 +30,7 @@ structarmed-clear:
 	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) \
 		$(STRUCT_ARMED_DIRECTORY)/vendor/bin/structarmed \
 		--config $(STRUCT_ARMED_DIRECTORY)/structarmed.php \
-		clear-cache
+		--clear-cache
 .PHONY: structarmed-clear
 
 structarmed-update:
