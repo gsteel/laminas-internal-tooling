@@ -18,7 +18,7 @@ ifeq ("$(HAS_PHPUNIT)","TRUE")
 
 HELP +=$(call MK_HELP,'test','Run PHPUnit tests')
 test: install
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/phpunit
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/phpunit
 .PHONY: test
 
 clear-phpunit-cache:

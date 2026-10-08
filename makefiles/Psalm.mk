@@ -30,13 +30,13 @@ ifeq ("$(HAS_PSALM)","TRUE")
 
 HELP +=$(call MK_HELP,'psalm','Run Psalm static analysis')
 psalm: install
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/psalm
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm
 .PHONY: psalm
 
 HELP +=$(call MK_HELP,'psalm-update-baseline','Update the Psalm baseline removing outdated issues')
 psalm-update-baseline: install
 ifneq ("$(wildcard ${PSALM_BASELINE})", "")
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/psalm --update-baseline
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm --update-baseline
 else
 	@$(call MK_ERROR, "A Psalm baseline has not been configured. Run `set-psalm-baseline` first.")
 endif
@@ -44,12 +44,12 @@ endif
 
 HELP +=$(call MK_HELP,'psalm-set-baseline','Add new issues to the Psalm baseline')
 psalm-set-baseline: install
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/psalm --set-baseline=${PSALM_BASELINE}
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm --set-baseline=${PSALM_BASELINE}
 .PHONY: psalm-set-baseline
 
 HELP +=$(call MK_HELP,'psalm-clear-cache','Clear the Psalm cache')
 psalm-clear-cache: install
-	@$(DOCKER_RUN) ${DOCKER_IMAGE_ID} vendor/bin/psalm --clear-cache
+	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm --clear-cache
 .PHONY: psalm-clear-cache
 
 endif
