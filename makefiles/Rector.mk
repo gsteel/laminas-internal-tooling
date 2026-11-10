@@ -1,3 +1,6 @@
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 RECTOR_DIRECTORY ?= $(PROJECT_DIR)tools/rector
 HAS_RECTOR := $(strip $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo TRUE; fi))
 
@@ -41,4 +44,6 @@ _do-rector-bump:
     		bump -D
 .PHONY: _do-rector-bump
 
-endif
+endif # HAS_RECTOR
+
+endif # DOCKER_IMAGE_BUILT

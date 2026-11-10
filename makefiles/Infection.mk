@@ -1,6 +1,7 @@
 INFECTION_DIRECTORY ?= $(PROJECT_DIR)tools/infection
 HAS_INFECTION := $(strip $(shell if [ -d $(INFECTION_DIRECTORY) ]; then echo TRUE; fi))
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 
 ifeq ("$(HAS_INFECTION)", "TRUE")
 
@@ -11,8 +12,13 @@ QA_TARGETS += infection
 
 HELP += $(call MK_HELP,'infection','Run mutation tests')
 
+INFECTION_CMD := $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) $(INFECTION_DIRECTORY)/vendor/bin/infection --configuration=infection.json
+ifeq ("$(HAS_MAGO)","TRUE")
+    INFECTION_CMD += --static-analysis-tool=mago
+endif
+
 infection:
-	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) $(INFECTION_DIRECTORY)/vendor/bin/infection --configuration=infection.json --static-analysis-tool=mago
+	$(INFECTION_CMD)
 .PHONY: infection
 
 infection-update:
@@ -36,4 +42,5 @@ _do-infection-bump:
     		bump -D
 .PHONY: _do-infection-bump
 
-endif
+endif # HAS_INFECTION
+endif # DOCKER_IMAGE_BUILT

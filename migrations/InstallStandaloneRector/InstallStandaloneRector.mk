@@ -2,6 +2,8 @@ _RECTOR_MIGRATION_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 RECTOR_DIRECTORY := $(PROJECT_DIR)tools/rector
 HAS_RECTOR_DIR := $(strip $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo TRUE; fi))
 
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 ifneq ("$(HAS_RECTOR_DIR)","TRUE")
 
 PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer config platform.php)
@@ -35,4 +37,5 @@ $(RECTOR_DIRECTORY):
 .github/workflows/rector.yml:
 	cp $(_RECTOR_MIGRATION_DIRECTORY)templates/github-workflow.yml .github/workflows/rector.yml
 
-endif
+endif # !HAS_RECTOR_DIR
+endif # DOCKER_IMAGE_BUILT

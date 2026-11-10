@@ -1,6 +1,8 @@
 HAS_PHPUNIT = FALSE
 PHPUNIT_CONFIG =
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 ifneq ("$(wildcard phpunit.xml.dist)", "")
     HAS_PHPUNIT = TRUE
     PHPUNIT_CONFIG = phpunit.xml.dist
@@ -29,4 +31,6 @@ ifneq ($(wildcard ${PHPUNIT_CACHE_DIR}), "")
 endif
 .PHONY: clear-phpunit-cache
 
-endif
+endif # HAS_PHPUNIT
+
+endif # DOCKER_IMAGE_BUILT

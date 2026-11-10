@@ -1,4 +1,6 @@
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 HAS_PHPCS = FALSE
 PHPCS_CONFIG =
 
@@ -15,7 +17,7 @@ endif
 
 
 ifeq ("$(HAS_PHPCS)","TRUE")
-    PHPCS_CACHE_FILE:=$(shell xpath -q -e 'string(/ruleset/arg[@name="cache"]/@value)' ${PHPCS_CONFIG})
+	$(eval PHPCS_CACHE_FILE := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) sh -c "xpath -q -e 'string(/ruleset/arg[@name="cache"]/@value)' ${PHPCS_CONFIG}"))
     QA_TARGETS := $(QA_TARGETS) phpcs
     CLEAN_TARGETS := $(CLEAN_TARGETS) clear-phpcs-cache
     HELP +=$(call MK_HELP,'phpcs','Run PHP_CodeSniffer coding standards checks')
@@ -37,4 +39,5 @@ clear-phpcs-cache:
 .PHONY: clear-phpcs-cache
 endif
 
-endif
+endif # HAS_PHPCS
+endif # DOCKER_IMAGE_BUILT

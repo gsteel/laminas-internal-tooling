@@ -1,6 +1,9 @@
 
 HAS_PSALM := FALSE
-PSALM_CONFIG :=
+PSALM_CONFIG := psalm.xml
+PSALM_BASELINE := psalm-baseline.xml
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 
 ifneq ("$(wildcard psalm.xml.dist)","")
     HAS_PSALM := TRUE
@@ -20,12 +23,8 @@ ifeq ("$(HAS_PSALM)","TRUE")
     ifneq ("$(wildcard ${PSALM_CONFIG})", "")
         CONFIG_CONTENT := $(strip $(shell cat $(PSALM_CONFIG)))
         ifneq ($(CONFIG_CONTENT), "")
-           $(eval PSALM_BASELINE := $(shell xpath -q -e 'string(//psalm/@errorBaseline)' ${PSALM_CONFIG}))
+           $(eval PSALM_BASELINE := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) sh -c "xpath -q -e 'string(//psalm/@errorBaseline)' ${PSALM_CONFIG}"))
         endif
-    endif
-
-    ifeq (${PSALM_BASELINE}, "")
-        PSALM_BASELINE = psalm-baseline.xml
     endif
 
 HELP +=$(call MK_HELP,'psalm','Run Psalm static analysis')
@@ -52,4 +51,5 @@ psalm-clear-cache: install
 	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm --clear-cache
 .PHONY: psalm-clear-cache
 
-endif
+endif # HAS_PSALM
+endif # DOCKER_IMAGE_BUILT

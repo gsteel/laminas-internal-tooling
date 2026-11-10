@@ -1,3 +1,6 @@
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 STRUCT_ARMED_DIRECTORY ?= $(PROJECT_DIR)tools/structarmed
 HAS_STRUCT_ARMED := $(strip $(shell if [ -d $(STRUCT_ARMED_DIRECTORY) ]; then echo TRUE; fi))
 
@@ -54,4 +57,6 @@ _do-structarmed-bump:
     		bump -D
 .PHONY: _do-structarmed-bump
 
-endif
+endif # HAS_STRUCT_ARMED
+
+endif # DOCKER_IMAGE_BUILT
