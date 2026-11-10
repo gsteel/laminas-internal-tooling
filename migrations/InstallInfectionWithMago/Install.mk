@@ -7,7 +7,7 @@ ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 
 ifneq ("$(HAS_INFECTION_DIR)","TRUE")
 
-PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) composer -qn config platform.php)
+PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) composer -qn --no-ansi config platform.php)
 HELP += $(call MK_HELP,'install-infection','Install a standalone copy of infection into tools/infection')
 
 install-infection: install-mago $(INFECTION_DIRECTORY) .github/workflows/infection.yml _do-install-infection
