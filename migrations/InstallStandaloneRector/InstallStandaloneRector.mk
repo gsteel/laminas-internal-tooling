@@ -6,7 +6,7 @@ HAS_RECTOR_DIR := $(strip $(shell if [ -d $(RECTOR_DIRECTORY) ]; then echo TRUE;
 ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 ifneq ("$(HAS_RECTOR_DIR)","TRUE")
 
-PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer config platform.php)
+PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) composer -qn --no-ansi config platform.php)
 HELP += $(call MK_HELP,'install-rector','Install a standalone copy of rector into tools/rector')
 
 install-rector: .github/workflows/rector.yml $(RECTOR_DIRECTORY) _do-install-rector
