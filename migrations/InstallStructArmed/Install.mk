@@ -9,7 +9,7 @@ ifneq ("$(HAS_STRUCT_ARMED_DIR)","TRUE")
 PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) composer -qn --no-ansi config platform.php)
 HELP += $(call MK_HELP,'install-structarmed','Install a standalone copy of structarmed into tools/structarmed')
 
-install-structarmed: $(STRUCT_ARMED_DIRECTORY) _do-install-structarmed
+install-structarmed: .github/workflows/structarmed.yml $(STRUCT_ARMED_DIRECTORY) _do-install-structarmed
 	@echo 'Now StructArmed is installed, you should edit its configuration file to define appropriate layers:'
 	@echo 'https://boundwize.github.io/structarmed/configuration/'
 .PHONY: install-structarmed
@@ -34,6 +34,11 @@ $(STRUCT_ARMED_DIRECTORY):
     		--working-dir=$(STRUCT_ARMED_DIRECTORY) \
     		install
 # end
+
+# Install the default workflow for StructArmed in CI
+.github/workflows/structarmed.yml:
+	cp $(_STRUCT_ARMED_MIGRATION_DIRECTORY)/github-workflow.yml .github/workflows/structarmed.yml
+
 
 endif # !HAS_STRUCT_ARMED_DIR
 endif # DOCKER_IMAGE_BUILT
