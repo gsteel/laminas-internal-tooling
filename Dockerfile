@@ -7,8 +7,17 @@ FROM composer:2 AS composer
 ARG PHP_VERSION
 FROM php:${PHP_VERSION}-alpine
 
+#
+# Additional container dependencies
+#
 # Composer uses git to determine the root package version
-RUN apk add --no-cache git bash
+# `xpath` is used for querying properties in various XML files such as PHPUnit or Psalm config files
+# bash is so that we can have a reasonable shell
+#
+RUN apk add --no-cache \
+    git \
+    bash \
+    perl-xml-xpath
 
 #
 # Install necessary PHP extensions (Including those for external tools)
