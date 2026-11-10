@@ -1,6 +1,7 @@
 INFECTION_DIRECTORY ?= $(PROJECT_DIR)tools/infection
 HAS_INFECTION := $(strip $(shell if [ -d $(INFECTION_DIRECTORY) ]; then echo TRUE; fi))
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 
 ifeq ("$(HAS_INFECTION)", "TRUE")
 
@@ -41,4 +42,5 @@ _do-infection-bump:
     		bump -D
 .PHONY: _do-infection-bump
 
-endif
+endif # HAS_INFECTION
+endif # DOCKER_IMAGE_BUILT

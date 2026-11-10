@@ -1,4 +1,6 @@
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 HAS_PHPCS = FALSE
 PHPCS_CONFIG =
 
@@ -37,4 +39,5 @@ clear-phpcs-cache:
 .PHONY: clear-phpcs-cache
 endif
 
-endif
+endif # HAS_PHPCS
+endif # DOCKER_IMAGE_BUILT

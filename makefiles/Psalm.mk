@@ -1,9 +1,9 @@
 
 HAS_PSALM := FALSE
-PSALM_CONFIG :=
 PSALM_CONFIG := psalm.xml
 PSALM_BASELINE := psalm-baseline.xml
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 
 ifneq ("$(wildcard psalm.xml.dist)","")
     HAS_PSALM := TRUE
@@ -51,5 +51,5 @@ psalm-clear-cache: install
 	@$(DOCKER_RUN) $(DOCKER_IMAGE_NAME) vendor/bin/psalm --clear-cache
 .PHONY: psalm-clear-cache
 
-endif
 endif # HAS_PSALM
+endif # DOCKER_IMAGE_BUILT

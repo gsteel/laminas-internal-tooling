@@ -2,6 +2,9 @@ _INFECTION_MIGRATION_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 INFECTION_DIRECTORY := $(PROJECT_DIR)tools/infection
 HAS_INFECTION_DIR := $(strip $(shell if [ -d $(INFECTION_DIRECTORY) ]; then echo TRUE; fi))
 
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 ifneq ("$(HAS_INFECTION_DIR)","TRUE")
 
 PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) $(DOCKER_IMAGE_NAME) composer -qn config platform.php)
@@ -33,4 +36,6 @@ $(INFECTION_DIRECTORY):
 .github/workflows/infection.yml:
 	cp $(_INFECTION_MIGRATION_DIRECTORY)github-workflow.yml .github/workflows/infection.yml
 
-endif
+endif # !HAS_INFECTION_DIR
+
+endif # DOCKER_IMAGE_BUILT

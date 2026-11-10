@@ -1,6 +1,8 @@
 HAS_MAGO = FALSE
 MAGO_CONFIG =
 
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
+
 ifneq ("$(wildcard mago.toml)","")
     HAS_MAGO = TRUE
     MAGO_CONFIG = mago.toml
@@ -73,4 +75,5 @@ HELP += $(call MK_HELP,'mago-fix','Run all Mago’s fixers')
 mago-fix: mago-fmt mago-lint-fix mago-sa-fix
 .PHONY: mago-fix
 
-endif
+endif # HAS_MAGO
+endif # DOCKER_IMAGE_BUILT

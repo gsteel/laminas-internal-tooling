@@ -2,6 +2,8 @@ _STRUCT_ARMED_MIGRATION_DIRECTORY := $(dir $(abspath $(lastword $(MAKEFILE_LIST)
 STRUCT_ARMED_DIRECTORY := $(PROJECT_DIR)tools/structarmed
 HAS_STRUCT_ARMED_DIR := $(strip $(shell if [ -d $(STRUCT_ARMED_DIRECTORY) ]; then echo TRUE; fi))
 
+
+ifeq ("$(DOCKER_IMAGE_BUILT)", "TRUE")
 ifneq ("$(HAS_STRUCT_ARMED_DIR)","TRUE")
 
 PROJECT_COMPOSER_PLATFORM := $(shell $(DOCKER_RUN) ${DOCKER_IMAGE_NAME} composer config platform.php)
@@ -33,4 +35,5 @@ $(STRUCT_ARMED_DIRECTORY):
     		install
 # end
 
-endif
+endif # !HAS_STRUCT_ARMED_DIR
+endif # DOCKER_IMAGE_BUILT
