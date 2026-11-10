@@ -24,7 +24,6 @@ Pretty much everything runs in Docker, so you will need docker installed and run
 
 Other host machine dependencies include:
 
-- `xpath` Some targets shell out to `xpath` to inspect XML configuration files
 - `find` Used in some situations to discover files in the working tree
 - `git` Used to fetch the documentation theme when building docs
 
