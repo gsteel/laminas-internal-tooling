@@ -7,7 +7,7 @@ DOCKER_DEFAULT_SECURITY_OPS=--cap-drop=ALL --security-opt="no-new-privileges=tru
 DOCKER_COMMON_OPS:=-v "`pwd`:`pwd`" -w "`pwd`" -v "`pwd`/.git:`pwd`/.git:ro" --ulimit nofile=1000000
 # Mount the local ini file in the container by default, if it exists
 ifneq ("$(wildcard php.ini)","")
-    DOCKER_COMMON_OPS := -v "`pwd`/php.ini:/usr/local/etc/php/conf.d/999-customisations.ini:ro"
+    DOCKER_COMMON_OPS += -v "`pwd`/php.ini:/usr/local/etc/php/conf.d/999-customisations.ini:ro"
 endif
 
 DOCKER_RUN:=docker run --rm -it ${DOCKER_DEFAULT_SECURITY_OPS} ${DOCKER_COMMON_OPS}
