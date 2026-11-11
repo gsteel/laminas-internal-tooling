@@ -173,3 +173,7 @@ Once installed, further [configuration](https://boundwize.github.io/structarmed/
 ### Psalm Removal
 
 Psalm can be removed from the project with `make uninstall-psalm` if Psalm is installed.
+
+### Custom PHP.ini Files
+
+When a project needs custom PHP runtime config, the `init-ini` target will create a blank ini file and add it to export ignores. Further QA targets that run out of Docker, will mount the ini file in the container so that runtime config can be easily modified.
