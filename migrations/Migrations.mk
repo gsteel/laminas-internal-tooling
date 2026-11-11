@@ -4,5 +4,6 @@ include $(_MAKEFILE_DIR)migrations/InstallStandaloneRector/InstallStandaloneRect
 include $(_MAKEFILE_DIR)migrations/InstallMago/InstallMago.mk
 include $(_MAKEFILE_DIR)migrations/UninstallPsalm/UninstallPsalm.mk
 include $(_MAKEFILE_DIR)migrations/InstallInfectionWithMago/Install.mk
+include $(_MAKEFILE_DIR)migrations/InstallRequireChecker/Install.mk
 include $(_MAKEFILE_DIR)migrations/InstallStructArmed/Install.mk
 include $(_MAKEFILE_DIR)migrations/AddIniFile/Migrate.mk
