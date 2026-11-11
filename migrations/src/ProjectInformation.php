@@ -6,17 +6,14 @@ namespace Laminas\Internal\Migrations;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Symfony\Component\Yaml\Yaml;
 use Throwable;
 
 use function assert;
 use function file_exists;
-use function file_get_contents;
 use function glob;
 use function is_array;
 use function is_dir;
 use function is_file;
-use function is_string;
 use function rtrim;
 use function sprintf;
 
@@ -123,20 +120,9 @@ final readonly class ProjectInformation
         );
 
         foreach ($files as $file) {
-            $fileContents = file_get_contents($file);
-            assert(is_string($fileContents), 'Failed to read file contents');
-
-            /** @var mixed $yaml */
-            $yaml = Yaml::parse($fileContents);
-            if (! is_array($yaml)) {
-                continue;
-            }
-
-            /** @var mixed $name */
-            $name = $yaml['name'] ?? null;
-
+            $workflow = new LaminasCIWorkflow($file);
             // The workflow name is probably the most consistent marker without inspecting the actual jobs and actions used.
-            if ($name === 'Continuous Integration') {
+            if ($workflow->name() === 'Continuous Integration') {
                 return $file;
             }
         }

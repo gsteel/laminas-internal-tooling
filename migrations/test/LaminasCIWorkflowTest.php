@@ -30,7 +30,7 @@ final class LaminasCIWorkflowTest extends TestCase
                 yaml: sucks
                 env:
                   default_php: '6.0'
-                more_yaml: 'sucks more'
+                more_yaml: sucks more
 
                 YAML,
             '6.0',
@@ -82,6 +82,23 @@ final class LaminasCIWorkflowTest extends TestCase
                 YAML,
             '6.0',
         ];
+
+        yield 'Comments are preserved' => [
+            <<<YAML
+                env:
+                  super: secret
+                  default_php: 5.3 # That's OLD!!
+                  other: secret
+                YAML,
+            <<<YAML
+                env:
+                  super: secret
+                  default_php: '6.0' # That's OLD!!
+                  other: secret
+
+                YAML,
+            '6.0',
+        ];
     }
 
     /**
@@ -120,8 +137,8 @@ final class LaminasCIWorkflowTest extends TestCase
             <<<YAML
                 yaml: sucks
                 env:
-                  php_extensions: 'pdo,intl,xdebug'
-                more_yaml: 'sucks more'
+                  php_extensions: pdo,intl,xdebug
+                more_yaml: sucks more
 
                 YAML,
             'pdo intl xdebug',
@@ -138,7 +155,7 @@ final class LaminasCIWorkflowTest extends TestCase
                 yaml: sucks
                 env:
                   php_extensions: mbstring
-                more_yaml: 'sucks more'
+                more_yaml: sucks more
 
                 YAML,
             'mbstring',
@@ -175,6 +192,25 @@ final class LaminasCIWorkflowTest extends TestCase
 
                 YAML,
             'mbstring',
+        ];
+
+        yield 'Comments are preserved' => [
+            <<<YAML
+                env:
+                  super: secret
+                  default_php: 5.3
+                  php_extensions: fred # This is very good extension
+                  other: secret
+                YAML,
+            <<<YAML
+                env:
+                  super: secret
+                  default_php: 5.3
+                  php_extensions: json,intl,mbstring # This is very good extension
+                  other: secret
+
+                YAML,
+            'json intl mbstring',
         ];
     }
 

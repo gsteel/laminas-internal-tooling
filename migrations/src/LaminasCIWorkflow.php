@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Laminas\Internal\Migrations;
 
-use Symfony\Component\Yaml\Yaml;
+use Horde\Yaml\Document\Node\MapNode;
+use Horde\Yaml\Document\Node\ScalarNode;
+use Horde\Yaml\Document\YamlFileDumper;
+use Horde\Yaml\Document\YamlFileLoader;
+use Horde\Yaml\Document\YamlStream;
 use Throwable;
 
-use function array_key_exists;
-use function assert;
-use function file_get_contents;
-use function file_put_contents;
-use function is_array;
 use function is_string;
 
 final class LaminasCIWorkflow
 {
-    /** @var array<array-key, mixed> */
-    private array $data;
+    private YamlStream $stream;
     private bool $isDirty = false;
 
     /**
@@ -27,48 +25,70 @@ final class LaminasCIWorkflow
     public function __construct(
         private readonly string $file,
     ) {
-        $contents = file_get_contents($this->file);
-        assert(is_string($contents) && $contents !== '', 'Empty or unreadable workflow file');
+        $this->stream = (new YamlFileLoader())->load($this->file);
+    }
 
-        /** @var mixed $data */
-        $data = Yaml::parse($contents);
-        assert(is_array($data), 'Expected YAML to parse to an array');
+    /** @return non-empty-string|null */
+    public function name(): string|null
+    {
+        $document = $this->stream->getDocument();
+        /** @var mixed $node */
+        $node = $document['name'] ?? null;
 
-        $this->data = $data;
+        if (! $node instanceof ScalarNode) {
+            return null;
+        }
+
+        $name = $node->getValue();
+
+        return is_string($name) && $name !== '' ? $name : null;
+    }
+
+    private function fetchEnvNodeByKey(string $key): ScalarNode|null
+    {
+        $document = $this->stream->getDocument();
+
+        if (! $document->offsetExists('env')) {
+            return null;
+        }
+
+        $env = $document->getEntry('env');
+        if ($env === null) {
+            return null;
+        }
+
+        $env = $env->getValue();
+        /** @var mixed $node */
+        $node = $env instanceof MapNode ? $env[$key] : null;
+        if (! $node instanceof ScalarNode) {
+            return null;
+        }
+
+        return $node;
     }
 
     public function setDefaultPHPEnvironmentVariableIfPresent(string $version): void
     {
-        if (! array_key_exists('env', $this->data)) {
+        $node = $this->fetchEnvNodeByKey('default_php');
+        if ($node === null || $node->getValue() === null) {
             return;
         }
 
-        if (! is_array($this->data['env'])) {
-            return;
-        }
-
-        if (! array_key_exists('default_php', $this->data['env']) || $this->data['env']['default_php'] === null) {
-            return;
-        }
-
-        $this->data['env']['default_php'] = $version;
-        $this->isDirty                    = true;
+        $node->setValue($version);
+        $this->isDirty = true;
     }
 
     public function setPhpExtensionsFromSpaceSeparatedEnvironmentVariable(string $env): void
     {
-        if (! array_key_exists('env', $this->data) || ! is_array($this->data['env'])) {
-            return;
-        }
-
-        if (! array_key_exists('php_extensions', $this->data['env'])) {
+        $node = $this->fetchEnvNodeByKey('php_extensions');
+        if ($node === null) {
             return;
         }
 
         $value = implode(',', explode(' ', $env));
 
-        $this->data['env']['php_extensions'] = $value;
-        $this->isDirty                       = true;
+        $node->setValue($value);
+        $this->isDirty = true;
     }
 
     public function write(): void
@@ -77,16 +97,8 @@ final class LaminasCIWorkflow
             return;
         }
 
-        file_put_contents(
-            $this->file,
-            Yaml::dump(
-                $this->data,
-                10,
-                2,
-                Yaml::DUMP_NULL_AS_EMPTY,
-            ),
-        );
-
+        $writer = new YamlFileDumper();
+        $writer->dump($this->stream, $this->file);
         $this->isDirty = false;
     }
 }
