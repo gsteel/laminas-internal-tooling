@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Example configuration for composer-unused
  */

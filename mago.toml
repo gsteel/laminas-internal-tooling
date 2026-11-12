@@ -12,6 +12,7 @@ paths = ["migrations/"]
 excludes = [
     "migrations/*/templates/rector.php",
     "migrations/*/structarmed.php",
+    "migrations/*/composer-unused.php",
 ]
 [analyzer]
 
