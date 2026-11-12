@@ -111,6 +111,12 @@ When `composer-require-checker` is installed to `./tools/crc`
 
 - `make crc` Runs the analysis
 
+### `composer-unused` Targets
+
+When `composer-unused` is installed to `./tools/unused`
+
+- `make composer-unused` Runs the analysis
+
 ### Dependency Management Targets
 
 - `make install` - Often not required because this lib is distributed via composer itself
@@ -174,6 +180,8 @@ Install [StructArmed](https://boundwize.github.io/structarmed/) into `./tools/st
 make install-structarmed
 ```
 
+Once installed, further [configuration](https://boundwize.github.io/structarmed/quick-start/) will be required.
+
 ### Composer Require Checker Installation
 
 Install [composer-require-checker](https://github.com/maglnet/ComposerRequireChecker) into `./tools/crc`
@@ -182,7 +190,13 @@ Install [composer-require-checker](https://github.com/maglnet/ComposerRequireChe
 make install-crc
 ```
 
-Once installed, further [configuration](https://boundwize.github.io/structarmed/quick-start/) will be required.
+### Composer Unused Installation
+
+Install [composer-unused](https://github.com/composer-unused/composer-unused) into `./tools/unused`
+
+```bash
+make install-composer-unused
+```
 
 ### Psalm Removal
 
