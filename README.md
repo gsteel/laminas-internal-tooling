@@ -105,6 +105,12 @@ When [StructArmed](https://boundwize.github.io/structarmed/) is installed to `./
 - `make structarmed-fix` Runs auto fixers
 - `make structarmed-clear` Clears the cache
 
+### `composer-require-checker` Targets
+
+When `composer-require-checker` is installed to `./tools/crc`
+
+- `make crc` Runs the analysis
+
 ### Dependency Management Targets
 
 - `make install` - Often not required because this lib is distributed via composer itself
@@ -166,6 +172,14 @@ Install [StructArmed](https://boundwize.github.io/structarmed/) into `./tools/st
 
 ```bash
 make install-structarmed
+```
+
+### Composer Require Checker Installation
+
+Install [composer-require-checker](https://github.com/maglnet/ComposerRequireChecker) into `./tools/crc`
+
+```bash
+make install-crc
 ```
 
 Once installed, further [configuration](https://boundwize.github.io/structarmed/quick-start/) will be required.
