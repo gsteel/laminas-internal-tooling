@@ -78,6 +78,7 @@ include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
 include $(_MAKEFILE_DIR)makefiles/Psalm.mk
 include $(_MAKEFILE_DIR)makefiles/Rector.mk
 include $(_MAKEFILE_DIR)makefiles/RequireChecker.mk
+include $(_MAKEFILE_DIR)makefiles/ComposerUnused.mk
 include $(_MAKEFILE_DIR)makefiles/Infection.mk # Depends on Mago.mk
 include $(_MAKEFILE_DIR)makefiles/StructArmed.mk
 include $(_MAKEFILE_DIR)makefiles/Utilities.mk
