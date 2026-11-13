@@ -130,6 +130,15 @@ For tools that are installed in subdirectories, it's a pain to cd to each one an
 - `make update-tools`
 - `make bump-tools`
 
+### GitHub Related Targets
+
+If you have the [GitHub CLI installed](https://cli.github.com/), the following targets are currently available:
+
+Workflow Dependency Management: These automatically install the [`actions-lock`](https://github.com/github/gh-actions-lock) extension if necessary.
+
+- `make gha-lock` Lock workflow dependencies
+- `make gha-relock` Re-lock workflow dependencies
+
 ## Migrations
 
 Migrations represent small units of automation for common or one-off maintenance tasks for Laminas Repos.

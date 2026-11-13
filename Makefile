@@ -36,6 +36,7 @@ MK_BLUE = echo -e "\033[34m"$(1)"\033[0m"
 MK_GREEN = echo -e "\033[32m"$(1)"\033[0m"
 MK_RED = echo -e "\e[31m"$(1)"\e[0m"
 MK_HELP = "\033[36m"$(1)"\033[0m "$(2)"\n"
+MK_ADVICE = "\033[34m"$(1)"\033[0m "$(2)"\n"
 
 MK_INFO = @$(call MK_BLUE, $1)
 MK_SUCCESS = @$(call MK_GREEN, $1)
@@ -72,6 +73,7 @@ help:
 #
 include $(_MAKEFILE_DIR)makefiles/Docker.mk
 include $(_MAKEFILE_DIR)makefiles/Composer.mk
+include $(_MAKEFILE_DIR)makefiles/GitHub.mk
 include $(_MAKEFILE_DIR)makefiles/Mago.mk
 include $(_MAKEFILE_DIR)makefiles/PHPCodeSniffer.mk
 include $(_MAKEFILE_DIR)makefiles/PHPUnit.mk
